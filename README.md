@@ -24,5 +24,6 @@ invisible(lapply(packages_to_install, install_if_not_installed))
 # Slides
 The folder slides contains the slides of the lecture and workshops.
 
-#Tutorial and solutions
+# Tutorial and solutions
+
 The folder tutorial contains the R script we will complete during the tutorial. The folder solutions contains the solutions.
