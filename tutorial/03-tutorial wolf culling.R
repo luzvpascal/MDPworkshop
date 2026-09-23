@@ -3,6 +3,9 @@
 # COMPLEX DECISIONS MADE SIMPLE: A PRIMER ON STOCHASTIC DYNAMIC PROGRAMMING
 ##################################################################################
 
+library(MDPtoolbox)
+library(ggplot2)
+
 ##################################################################################
 # STEP 1: DEFINE OBJECTIVES
 ##################################################################################
@@ -51,9 +54,14 @@ Nmax <- 200
 Nmin <- 50
 
 # Utility function
-get_utility <- function(x) {
-  return(ifelse(x < Nmin | x > Nmax, 0, x))
+get_utility <- function(x, action) {
+  return(ifelse(x < Nmin, x-Nmin - action,
+                ifelse(x > Nmax, Nmax-x-action, x-action)))
 }
+
+plot(get_utility(states,5),
+     xlab="Population",
+     ylab="Utility function")
 
 ## build the transition and reward matrices ####
 # Transition matrix
@@ -80,7 +88,7 @@ for (k in 0:K) {
     transition[k+1,K+1,i] <- 1 - sum(transition[k+1,-(K+1),i])
 
     # Compute utility
-    utility[k+1,i] <- get_utility(nextpop)
+    utility[k+1,i] <- get_utility(k,H[i])
 
   } # end of action loop
 } # end of state loop
@@ -106,8 +114,10 @@ print(solution$policy)
 ##################################################################################
 # PLOT SOLUTION
 ##################################################################################
+selected_times <- c(1,50,100,150)
 solution_data <- data.frame(states=states,
-                            culling=H[solution$policy[,1]])
+                            culling=H[solution$policy[,selected_times]],
+                            time=sort(rep(selected_times, length(states))))
 
 solution_data |>
   ggplot(aes(x=states,
@@ -115,4 +125,5 @@ solution_data |>
   geom_line()+
   theme_bw()+
   labs(x="Population size",
-       y="Culling number")
+       y="Culling number")+
+  facet_wrap(~time)

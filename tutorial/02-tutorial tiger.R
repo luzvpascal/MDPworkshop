@@ -15,26 +15,26 @@ library(ggplot2)
 ###################################################################################
 # STEP 2: DEFINE STATES
 ##################################################################################
-states <- c("Extant","Extinct")
+states <- c(..., ... )
 
 ##################################################################################
 # STEP 3: DEFINE CONTROL ACTIONS
 ##################################################################################
-actions <- c("Do nothing","Manage")
+actions <- c(..., ...)
 
 ##################################################################################
 # STEP 4: DEFINE TRANSITION FUNCTION
 ##################################################################################
 
 #define the transition function for action 1: do nothing
-PR_dn <- matrix(c(0.9, 0.1, #from extant to extant, and extinct resp
-                  0.0, 1.0 #from extinct to extant, and extinct resp
+PR_dn <- matrix(c(..., ..., #from extant to extant, and extinct resp
+                  ..., ... #from extinct to extant, and extinct resp
                   ),
                 byrow=TRUE, ncol=2, dimnames =list(states,states))
 
 #define the transition function for action 2: manage
-PR_manage <- matrix(c(0.94, 0.06, #from extant to extant, and extinct resp
-                      0.0, 1.0 #from extinct to extant, and extinct resp
+PR_manage <- matrix(c(..., ..., #from extant to extant, and extinct resp
+                      ..., ... #from extinct to extant, and extinct resp
                       ),
                     byrow=TRUE, ncol=2, dimnames =list(states,states))
 
@@ -47,13 +47,8 @@ print(PR)
 # STEP 5: DEFINE UTILITY - Reward function
 ##################################################################################
 
-reward_extant <- 1 #immediate reward if the tiger population is extant
-reward_extinct <- 0#immediate reward if the tiger population is extinct
-cost_dn <- 0 #cost of doing nothing
-cost_manage <- 0.1 #cost of management
-
-R <- matrix(c(reward_extant-cost_dn,reward_extant-cost_manage, #reward for state 1 action 1, action 2
-              reward_extinct-cost_dn,reward_extinct-cost_manage #reward for state 2 action 1, action 2
+R <- matrix(c(..., ..., #reward for state 1 action 1, action 2
+              ..., ... #reward for state 2 action 1, action 2
               ),
             byrow=TRUE,
             ncol=2,
@@ -63,31 +58,16 @@ print(R)
 ##################################################################################
 # STEP 6: SOLVE BELLMAN EQUATION WITH VALUE ITERATION
 ##################################################################################
-#finite horizon ####
-gamma <- 1 #define the discount factor
-horizon <- 7 #horizon
-solution <- mdp_finite_horizon(#we use the function mdp_finite_horizon
-                   PR,
-                   R,
-                   gamma,
-                   horizon)
 
-#table of expected values
-print(solution$V)
+#finite horizon ##################################################################
+gamma <- ... #define the discount factor
+horizon <- ... #horizon
 
-#table of strategies
-print(solution$policy)
+#use the function mdp_finite_horizon from the package MDPtoolbox to find the table of values and actions
 
 
-#infinite horizon ####
-gamma <- 0.9 #define the discount factor
-solution_inf <- mdp_value_iteration(#we use the function mdp_finite_horizon
-  PR,
-  R,
-  gamma)
+#infinite horizon ##############################################################
+gamma <- ... #define the discount factor
 
-#table of expected values
-print(solution_inf$V)
+#use the function mdp_value_iteration from the package MDPtoolbox to find the table of values and actions
 
-#table of strategies
-print(solution_inf$policy)
