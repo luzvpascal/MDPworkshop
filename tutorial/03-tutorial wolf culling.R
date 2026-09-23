@@ -16,19 +16,16 @@ library(ggplot2)
 # STEP 2: DEFINE STATES
 ##################################################################################
 
-# state space limit
-K <- 250
-
 # Vector of all possible states
-states <- 0:K
+states <- ...
 
 ##################################################################################
 # STEP 3: DEFINE CONTROL ACTIONS
 ##################################################################################
 
-# Vector of actions: rate of the population that can be removed, ranging #from 0 to 1
-# H <- seq(0, 1, 1/(K+1))
-H <- states
+# Vector of actions:
+actions <- ...
+
 ##################################################################################
 # STEP 4: DEFINE TRANSITION FUNCTION
 ##################################################################################
@@ -38,10 +35,32 @@ lambda <- 1.25
 
 # Function for the exponential growth of the dynamic model
 dynamic <- function(actualpop, action) {
-  nextpop <- max(0, actualpop*lambda - action)
-  # nextpop <- actualpop*lambda*(1-action)
-  return(nextpop)
+  ...
 }
+
+transition <- array(0, dim=c(length(states),
+                             length(states),
+                             length(actions)))
+# Fill in the transition function
+# Loop on all states
+for (s in 1:length(states)) {
+  # Loop on all actions
+  for (i in 1:length(actions)) {
+
+    # Calculate the transition state at the next step, given the #current state k and the harvest Hi
+    nextpop_avg <- ... #average of next population
+
+    # Implement demographic stochasticity by drawing
+    #probability from a Poisson density function
+    #hint: use the dpois function
+    transition[s, ,i] <- ...
+
+    # We need to correct this density for the final capping state
+    transition[s,length(states),i] <- 1 - sum(transition[s,-(length(states)),i])
+
+  } # end of action loop
+} # end of state loop
+
 
 ##################################################################################
 # STEP 5: DEFINE UTILITY - Reward function
@@ -55,75 +74,34 @@ Nmin <- 50
 
 # Utility function
 get_utility <- function(x, action) {
-  return(ifelse(x < Nmin, x-Nmin - action,
-                ifelse(x > Nmax, Nmax-x-action, x-action)))
+  ...
 }
 
-plot(get_utility(states,5),
-     xlab="Population",
-     ylab="Utility function")
-
-## build the transition and reward matrices ####
-# Transition matrix
-transition <- array(0, dim = c(length(states), length(states), length(H)))
-
-# Utility matrix
-utility <- array(0, dim = c(length(states), length(H)))
+# Reward matrix
+reward <- array(0, dim = c(length(states), length(actions)))
 
 # Fill in the transition and utility matrix
 # Loop on all states
-for (k in 0:K) {
+for (s in 1:length(states)) {
 
   # Loop on all actions
-  for (i in 1:length(H)) {
-
-    # Calculate the transition state at the next step, given the #current state k and the harvest Hi
-    nextpop <- dynamic(k, H[i])
-
-    # Implement demographic stochasticity by drawing
-    #probability from a Poisson density function
-    transition[k+1,,i] <- dpois(states, nextpop)
-
-    # We need to correct this density for the final capping state
-    transition[k+1,K+1,i] <- 1 - sum(transition[k+1,-(K+1),i])
+  for (i in 1:length(actions)) {
 
     # Compute utility
-    utility[k+1,i] <- get_utility(k,H[i])
+    reward[s,i] <- ...
 
   } # end of action loop
 } # end of state loop
+
+
 ##################################################################################
 # STEP 6: SOLVE BELLMAN EQUATION WITH VALUE ITERATION
 ##################################################################################
 
 # Discount factor
-discount <- 0.9
+discount <- ...
 
-horizon <- 150 #horizon
-solution <- mdp_finite_horizon(#we use the function mdp_finite_horizon
-  transition,
-  utility,
-  discount,
-  horizon)
+horizon <- ... #horizon
 
-#table of expected values
-print(solution$V)
+#Use the function mdp_finite_horizon
 
-#table of strategies
-print(solution$policy)
-##################################################################################
-# PLOT SOLUTION
-##################################################################################
-selected_times <- c(1,50,100,150)
-solution_data <- data.frame(states=states,
-                            culling=H[solution$policy[,selected_times]],
-                            time=sort(rep(selected_times, length(states))))
-
-solution_data |>
-  ggplot(aes(x=states,
-             y=culling)) +
-  geom_line()+
-  theme_bw()+
-  labs(x="Population size",
-       y="Culling number")+
-  facet_wrap(~time)
