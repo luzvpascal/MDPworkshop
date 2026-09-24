@@ -27,16 +27,10 @@ actions <- c(..., ...)
 ##################################################################################
 
 #define the transition function for action 1: do nothing
-PR_dn <- matrix(c(..., ..., #from extant to extant, and extinct resp
-                  ..., ... #from extinct to extant, and extinct resp
-                  ),
-                byrow=TRUE, ncol=2, dimnames =list(states,states))
+PR_dn <- ...
 
 #define the transition function for action 2: manage
-PR_manage <- matrix(c(..., ..., #from extant to extant, and extinct resp
-                      ..., ... #from extinct to extant, and extinct resp
-                      ),
-                    byrow=TRUE, ncol=2, dimnames =list(states,states))
+PR_manage <- ...
 
 PR <- array(c(PR_dn,PR_manage),
             dim=c(2,2,2), #2 states, 2 states, 2 actions
@@ -47,12 +41,7 @@ print(PR)
 # STEP 5: DEFINE UTILITY - Reward function
 ##################################################################################
 
-R <- matrix(c(..., ..., #reward for state 1 action 1, action 2
-              ..., ... #reward for state 2 action 1, action 2
-              ),
-            byrow=TRUE,
-            ncol=2,
-            dimnames=list(states,actions))
+R <- ...
 print(R)
 
 ##################################################################################
@@ -66,8 +55,12 @@ horizon <- ... #horizon
 #use the function mdp_finite_horizon from the package MDPtoolbox to find the table of values and actions
 
 
+# think about ways we can represent the solution
+
+
 #infinite horizon ##############################################################
 gamma <- ... #define the discount factor
 
 #use the function mdp_value_iteration from the package MDPtoolbox to find the table of values and actions
 
+# think about ways we can represent the solution

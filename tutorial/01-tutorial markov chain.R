@@ -72,39 +72,14 @@ ggplot(data.reef,
 
 weather_names <- c( ... , ... )# states
 
-weather_matrix <- matrix(c( ... , ... , #row 1 - probability of transitioning to other states from state 1
-                          ... , ... ),  #row 2 - probability of transitioning to other states from healthy
-                      ncol = 2,
-                      byrow=TRUE,
-                      dimnames = list(weather_names, weather_names))
+weather_matrix <- ...
 
-mcB_weather <- new("markovchain", states = weather_names,
-           transitionMatrix =weather_matrix) #markov chain object
+#markov chain object
+mcB_weather <- ...
 
 #run the Markov chain for 20 time steps
 Tmax <- 20
 time_steps <- seq(Tmax)
-states_seq_weather <- markovchainSequence(n=Tmax, markovchain=mcB_weather, include=FALSE)
+states_seq_weather <- ...
 
-#create a data frame
-data.weather <- data.frame(states=states_seq_weather,
-                            time_steps=time_steps)
-#convert the states into factors
-data.weather <- data.weather %>%
-  mutate(states = factor(states,
-                         levels = weather_names))
-
-ggplot(data.weather,
-       aes(x = time_steps,
-           y = as.numeric(states), #give a numerical value to each state 1 for Unhealthy 2 for Healthy
-           group = 1)) +
-  geom_line() +
-  geom_point(size=3) +
-  scale_y_continuous(
-    breaks = c(1, 2),
-    labels = weather_names
-  )+
-  labs(x="Time",
-       y="Weather")+
-  theme_bw()+
-  theme(text=element_text(size=15))
+#plot the sequence of states for the weather
