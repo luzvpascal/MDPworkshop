@@ -32,9 +32,8 @@ PR_dn <- ...
 #define the transition function for action 2: manage
 PR_manage <- ...
 
-PR <- array(c(PR_dn,PR_manage),
-            dim=c(2,2,2), #2 states, 2 states, 2 actions
-            dimnames=list(states,states,actions)) #state, state, action
+#check the documentation of mdp_finite_horizon for the format of the transition function
+PR <- ...
 print(PR)
 
 ##################################################################################
@@ -42,6 +41,7 @@ print(PR)
 ##################################################################################
 
 R <- ...
+#check the documentation of mdp_finite_horizon for the format of the reward function
 print(R)
 
 ##################################################################################
