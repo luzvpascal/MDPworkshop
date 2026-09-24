@@ -22,7 +22,7 @@ install_if_not_installed <- function(package) {
 invisible(lapply(packages_to_install, install_if_not_installed))
 ```
 # Slides
-The folder slides contains the slides of the lecture and workshops.
+The folder slides contains the slides of the lecture and tutorial.
 
 # Tutorial and solutions
 
