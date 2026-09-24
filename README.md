@@ -26,4 +26,4 @@ The folder slides contains the slides of the lecture and workshops.
 
 # Tutorial and solutions
 
-The folder tutorial contains the R script we will complete during the tutorial. The folder solutions contains the solutions.
+The folder tutorial contains the R script we will complete during the tutorial. The folder solutions contains potential solutions and will be shared at the end of the workshop.
